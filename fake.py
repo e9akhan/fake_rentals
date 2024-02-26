@@ -51,11 +51,9 @@ def create_rentals(assets, q):
         asset = random.choice(assets)
         searched_asset = search_asset(rentals, asset["id"])
         if searched_asset:
-            today = datetime.strftime(date.today(), "%Y-%m-%d")
-            if searched_asset["end_date"] < today:
-                start_date = datetime.strptime(
-                    searched_asset["end_date"], "%Y-%m-%d"
-                ) + timedelta(days=1)
+            asset_end_date = datetime.strptime(searched_asset["end_date"], "%Y-%m-%d")
+            if asset_end_date < datetime.today():
+                start_date = asset_end_date + timedelta(days=1)
                 end_date = start_date + timedelta(days=random.randint(1, 11))
                 rentals.append(
                     {
