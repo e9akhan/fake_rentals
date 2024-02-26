@@ -14,7 +14,7 @@ def create_assets(p):
     """
     assets = []
     purchase_date = [
-        datetime.date.today() - datetime.timedelta(days=x) for x in range(30, 50)
+        datetime.date.today() - datetime.timedelta(days=x) for x in range(365, 400)
     ]
     for i in range(1, p + 1):
         assets.append(
@@ -49,26 +49,33 @@ def create_rentals(assets, q):
     Create rentals.
     """
     rentals = []
+    i = 1
 
-    for i in range(1, q + 1):
+    while len(rentals) < q:
         asset = random.choice(assets)
         searched_asset = search_asset(rentals, asset["id"])
 
         if searched_asset:
-            start_date = datetime.datetime.strptime(
-                searched_asset["end_date"], "%Y-%m-%d"
-            ) + datetime.timedelta(days=random.randint(1, 4))
-            end_date = start_date + datetime.timedelta(days=random.randint(1, 11))
-            rentals.append(
-                {
-                    "id": i,
-                    "asset_id": asset["id"],
-                    "start_date": datetime.datetime.strftime(start_date, "%Y-%m-%d"),
-                    "end_date": datetime.datetime.strftime(end_date, "%Y-%m-%d"),
-                }
-            )
+            today = datetime.datetime.strftime(datetime.date.today(), "%Y-%m-%d")
+
+            if searched_asset["end_date"] < today:
+                start_date = datetime.datetime.strptime(
+                    searched_asset["end_date"], "%Y-%m-%d"
+                ) + datetime.timedelta(days=random.randint(1, 2))
+                end_date = start_date + datetime.timedelta(days=random.randint(1, 11))
+                rentals.append(
+                    {
+                        "id": i,
+                        "asset_id": asset["id"],
+                        "start_date": datetime.datetime.strftime(
+                            start_date, "%Y-%m-%d"
+                        ),
+                        "end_date": datetime.datetime.strftime(end_date, "%Y-%m-%d"),
+                    }
+                )
+                i += 1
         else:
-            start_date = datetime.date.today()
+            start_date = datetime.date.today() - datetime.timedelta(days=365)
             end_date = start_date + datetime.timedelta(days=random.randint(1, 11))
             rentals.append(
                 {
@@ -78,6 +85,7 @@ def create_rentals(assets, q):
                     "end_date": datetime.datetime.strftime(end_date, "%Y-%m-%d"),
                 }
             )
+            i += 1
 
     return rentals
 
