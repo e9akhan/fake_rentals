@@ -89,7 +89,7 @@ def main():
     assets = create_assets(10)
     rentals = create_rentals(assets, 40)
 
-    filepath = os.path.join(os.getcwd(), "fake_data.csv")
+    filepath = os.path.join(os.getcwd(), "rentals.csv")
 
     with open(filepath, "w", encoding="utf-8") as f:
         headers = rentals[0].keys()
