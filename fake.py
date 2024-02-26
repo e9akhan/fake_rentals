@@ -14,7 +14,7 @@ def create_assets(p):
     """
     assets = []
     purchase_date = [
-        datetime.date.today() - datetime.timedelta(days=x) for x in range(365, 400)
+        datetime.date.today() - datetime.timedelta(days=random.randint(366, 400))
     ]
     for i in range(1, p + 1):
         assets.append(
